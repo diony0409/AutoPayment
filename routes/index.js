@@ -1,8 +1,8 @@
 const express   =require('express');
-const routes    =express.Router();
+const router    =express.Router();
 
-Router.get('/',function(req,res){
-    res.send('라우트를 사용한 메인 페이지');
+router.get('/',function(req,res){
+    res.render('index',{name: '가',age : '33',job:'가'});
 });
 
 module.exports = router;
