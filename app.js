@@ -10,12 +10,10 @@ const adminRouter   =require('./routes/admin');
 
 app.use(express.static(__dirname + '/public'));
 app.use('/',mainRouter);
-app.use('admin',adminRouter);
+app.use('/admin',adminRouter);
 
 
-app.get('/admin', function(req, res) {
-	res.sendFile(__dirname + '/html/admin.html');
-});
+
 const PORT = 8088;
 app.listen(PORT, function() {
     console.log('Listening on port: ', PORT);
