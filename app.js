@@ -8,10 +8,12 @@ app.set('view engine', 'ejs');
 console.log('sdf');
 const mainRouter    =require('./routes/index');
 const adminRouter   =require('./routes/admin');
+const classRouter   =require('./routes/class');
 
 app.use(express.static(__dirname + '/public'));
 app.use('/',mainRouter);
 app.use('/admin',adminRouter);
+app.use('/class',classRouter);
 
 //이미지 업로드 경로
 const path = require('path');
