@@ -8,10 +8,12 @@ app.set('view engine', 'ejs');
 
 const mainRouter    =require('./routes/index');
 const adminRouter   =require('./routes/admin');
+const classRouter   =require('./routes/class');
 
 app.use(express.static(__dirname + '/public'));
 app.use('/',mainRouter);
 app.use('/admin',adminRouter);
+app.use('/class',classRouter);
 
 
 

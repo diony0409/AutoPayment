@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+    <style>
+    .mytable { border-collapse:collapse; }  
+    .mytable th, .mytable td { border:1px solid black; }
+    </style>
+
+  </head>
+
+<body>
+<header>
+<main>
+    <table class="mytable">
+    <tr>
+        <Td>
+    <div class="container">
+        <video id="video" width="600" height="400" autoplay playsinline muted style="position:absolute; top:0; left:0;"></video>
+        <!-- 그리기 영역 정의, 비디오 영역에 겹쳐서 그림 -->
+        <canvas id="canvas" width="600" height="400" style="position:absolute; top:0; left:0px;"></canvas>
+    </div>
+</Td>
+<Td>
+    <?= ${predictions[i].class}>
+    
+</td>
+
+</tr>
+</table>
+</main>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@2.2.2/dist/coco-ssd.min.js"></script>
+    
+<script>
+    const video = document.getElementById('video');
+    const canvas = document.getElementById("canvas");
+    const context = canvas.getContext("2d");
+
+    let webcam, model;
+
+    async function app() {
+        webcam = await navigator.mediaDevices.getUserMedia({ video: true, audio: false })
+        video.srcObject = webcam;
+        model = await cocoSsd.load();
+        
+        loop();
+    }
+    async function loop() {
+        context.drawImage(video, 0, 0);
+        //예측
+        const predictions = await model.detect(canvas);
+        console.log('Predictions: ', predictions);
+
+        //line draw
+        context.beginPath();
+            context.lineWidth = 3;
+            context.strokeStyle="red"; // Purple path
+            context.moveTo(450,0);
+            context.lineTo(450,600);
+            context.stroke(); // Draw it
+
+        /* 객체 탐지 결과 드로잉 */
+        for (let i=0; i<predictions.length; i++) {
+            let [x, y, width, height] = predictions[i].bbox;
+            
+            context.beginPath();
+            context.lineWidth = 2;  //라인두께
+            context.strokeStyle = "#00ff00";  //선 색 
+            context.strokeRect(x, y, width, height);   // 테두리만 있는 사각형
+            context.fillStyle = "#00ff00";
+            context.fillRect(x, y-20, width, 20);
+            
+            context.font = "25px Arial";
+            context.fillStyle = "#ffffff";
+            context.fillText(`${predictions[i].class} :  ${parseFloat(predictions[i].score).toFixed(2)}`, x, y);
+
+        }
+        
+        requestAnimationFrame(loop);
+    }
+    app();
+</script>
+</body>
+</html>
