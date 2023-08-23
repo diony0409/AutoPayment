@@ -5,7 +5,7 @@ const app = express();
 app.set('views',__dirname + '/views');
 app.set('view engine', 'ejs');
 
-
+console.log('sdf');
 const mainRouter    =require('./routes/index');
 const adminRouter   =require('./routes/admin');
 
@@ -13,6 +13,10 @@ app.use(express.static(__dirname + '/public'));
 app.use('/',mainRouter);
 app.use('/admin',adminRouter);
 
+//이미지 업로드 경로
+const path = require('path');
+const publicPath = path.join(__dirname, 'public');
+app.use(express.static(publicPath));
 
 
 const PORT = 8088;
