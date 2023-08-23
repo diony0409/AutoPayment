@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 
+//views 디렉토리에서 ejs 엔진
 app.set('views',__dirname + '/views');
 app.set('view engine', 'ejs');
 
