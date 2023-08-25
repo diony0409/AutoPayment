@@ -23,7 +23,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"> </script>
     
 <script>
-
+    let item_list = [];
     const labels = ['FantaPineM', 'FantaPineS','GumHurabono','JinRamenCup','JinroSoju','Maeilmilk','freshwater500ml','lighter','mygumi','pocachip','pringles'];
 
     const video = document.getElementById('video');
@@ -94,6 +94,11 @@
             context.font = "25px Arial";
             context.fillStyle = "#ffffff";
             context.fillText(`${labels[klass]} :  ${parseFloat(score).toFixed(2)}`, x1, y1);
+            //labels[klass]를 다 push   [환타, 물, 환타, 마이구미]
+            //{item_name: labels[klass], cnt: 1}
+            //labels[klass]이 item_list에 있는지 확인
+            //없으면 추가, 있으면 카운트 증가
+
         }
        
         requestAnimationFrame(loop);
