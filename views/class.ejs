@@ -46,7 +46,7 @@
     async function app() {
         webcam = await navigator.mediaDevices.getUserMedia({ video: true, audio: false })
         video.srcObject = webcam;
-        model = await cocoSsd.load();
+        model = await tf.loadLayersModel('https://github.com/diony0409/AutoPayment/tree/main/best_web_model');
         
         loop();
     }
