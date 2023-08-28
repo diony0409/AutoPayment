@@ -35,10 +35,10 @@
         <table class="table" id="itemTableBody">
             <thead>
               <tr>
-                <th scope="col">#</th>
-                <th scope="col">First</th>
-                <th scope="col">Last</th>
-                <th scope="col">Handle</th>
+                <th scope="col">제품명</th>
+                <th scope="col">수량</th>
+                <th scope="col">가격</th>
+                <th scope="col">비고</th>
               </tr>
             </thead>
             <tbody>
@@ -70,15 +70,7 @@
 
     var item_list = [];
     item_list.push([0,0]);
-    function hasValueIn2DArray(array2D, value) {
-            for (let i = 0; i < array2D.length; i++) {
-                    if (array2D[i][0] === value) {
-                        return true;
-                     }
-                
-            }
-            return false;
-        }
+    const displayedItems = [];
     
     itemList = {
         'FantaPineM':0,
@@ -100,7 +92,9 @@
        
         loop();
     }
+    let anchor = 0
     async function loop() {
+        anchor++;
         const image = tf.tidy(() => {
             return tf.image.resizeBilinear(tf.browser.fromPixels(video), [640, 640])
               .div(255.0).expandDims(0);
@@ -183,25 +177,58 @@
         // cnt += 1;
         // console.log(cnt);
         console.log(itemList);
+        // clnsole.log(itemList[labels[klass]]);
+
         requestAnimationFrame(loop);
         const itemTableBody = document.getElementById("itemTableBody");
-
+        
+/*
 // itemList 객체를 반복하며 값이 60을 초과하는 항목들을 테이블에 추가
 for (const item in itemList) {
-    if (itemList[item] > 20) {
+    if (itemList[item] > 10 && !displayedItems[item]) {
         const row = document.createElement("tr");
         const itemCell = document.createElement("td");
         const countCell = document.createElement("td");
+        displayedItems[item] = '0';
+        
 
         itemCell.textContent = item;
+        countCell.textContent = resultCnt;
+
+        row.appendChild(itemCell);
+        row.appendChild(countCell);
+
+        itemTableBody.appendChild(row);
+    }else if(itemList[item]>20 && displayedItems[item]){
+        resultCnt++;
+    }
+    
+
+}*/
+
+
+for (const item in itemList) {
+    if (itemList[item] === 10 || itemList[item] === 20 || itemList[item] === 30) {
+        const row = document.createElement("tr");
+        const itemCell = document.createElement("td");
+        const countCell = document.createElement("td");
+        const counttCell = document.createElement("td");
+       
+        itemCell.textContent = item;
+      
         countCell.textContent = itemList[item];
+        counttCell.textContent = 1;
 
         row.appendChild(itemCell);
         row.appendChild(countCell);
 
         itemTableBody.appendChild(row);
     }
+    
+
 }
+
+
        
     }
 /*
