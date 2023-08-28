@@ -6,22 +6,54 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
-  </head>
+  <style>
+    .container{
+        display: flex;
+        height: 100vh;
+    }
+    .section{
+        flex: 1;
+        
+        padding: 20px;
+    }
+  </style>
+
+</head>
 
 <body>
+
 <header>
-   
 </header>
 <main>
     <div class="container">
+        <div class="section">
         <video id="video" width="640" height="480" autoplay playsinline muted style="position:absolute; top:0; left:0;"></video>
         <!-- 그리기 영역 정의, 비디오 영역에 겹쳐서 그림 -->
         <canvas id="canvas" width="640" height="480" style="position:absolute; top:0; left:0;"></canvas>
     </div>
+    <div class="section">
+        <table class="table" id="itemTableBody">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">First</th>
+                <th scope="col">Last</th>
+                <th scope="col">Handle</th>
+              </tr>
+            </thead>
+            <tbody>
+            
+            </tbody>
+          </table>
+    </div>
+    </div>
+
+
+    
+
 </main>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"> </script>
-    
 <script>
    // let item_list = [];
     var cnt = 1;
@@ -36,6 +68,31 @@
     const WIDTH = canvas.width;
     const HEIGHT = canvas.height;
 
+    var item_list = [];
+    item_list.push([0,0]);
+    function hasValueIn2DArray(array2D, value) {
+            for (let i = 0; i < array2D.length; i++) {
+                    if (array2D[i][0] === value) {
+                        return true;
+                     }
+                
+            }
+            return false;
+        }
+    
+    itemList = {
+        'FantaPineM':0,
+        'FantaPineS':0,
+        'GumHurabono':0,
+        'JinRamenCup':0,
+        'JinroSoju':0,
+        'Maeilmilk':0,
+        'freshwater500ml':0,
+        'lighter':0,
+        'mygumi':0,
+        'pocachip':0,
+        'pringles':0
+    };
     async function app() {
         webcam = await navigator.mediaDevices.getUserMedia({ video: true, audio: false })
         video.srcObject = webcam;
@@ -94,20 +151,68 @@
             context.font = "25px Arial";
             context.fillStyle = "#ffffff";
             context.fillText(`${labels[klass]} :  ${parseFloat(score).toFixed(2)}`, x1, y1);
+
+            itemList[labels[klass]]++;
             //labels[klass]를 다 push   [환타, 물, 환타, 마이구미]
             //{item_name: labels[klass], cnt: 1}
             //labels[klass]이 item_list에 있는지 확인
             //없으면 추가, 있으면 카운트 증가
+            /*
+            console.log(item_list.length, labels[klass])  
+            let j=item_list.length;          
+            for(let i = 0; i < j; i++){
+                
+                if(hasValueIn2DArray(item_list,labels[klass]))
+                {
+                    //console.log('asdf222222');
+                    
+                    item_list[i][1]++;
+                    
+                }else{
+                    //console.log('asdf333333');
+                    item_list.push(labels[klass],0);
+                    item_list[i+1][1]=0;
+
+                }
+            }
+            */
+
 
         }
-        cnt += 1;
-        console.log(cnt);
+
+        // cnt += 1;
+        // console.log(cnt);
+        console.log(itemList);
         requestAnimationFrame(loop);
+        const itemTableBody = document.getElementById("itemTableBody");
+
+// itemList 객체를 반복하며 값이 60을 초과하는 항목들을 테이블에 추가
+for (const item in itemList) {
+    if (itemList[item] > 20) {
+        const row = document.createElement("tr");
+        const itemCell = document.createElement("td");
+        const countCell = document.createElement("td");
+
+        itemCell.textContent = item;
+        countCell.textContent = itemList[item];
+
+        row.appendChild(itemCell);
+        row.appendChild(countCell);
+
+        itemTableBody.appendChild(row);
+    }
+}
        
     }
-    
+/*
+    if(item_list[i][1]>40){
+        result_list.push(item_list[i][0])
+    }
+    */
     
     app();
+
+    
 </script>
 </body>
 </html>
