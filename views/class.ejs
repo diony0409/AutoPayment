@@ -23,7 +23,8 @@
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"> </script>
     
 <script>
-    let item_list = [];
+   // let item_list = [];
+    var cnt = 1;
     const labels = ['FantaPineM', 'FantaPineS','GumHurabono','JinRamenCup','JinroSoju','Maeilmilk','freshwater500ml','lighter','mygumi','pocachip','pringles'];
 
     const video = document.getElementById('video');
@@ -100,9 +101,12 @@
             //없으면 추가, 있으면 카운트 증가
 
         }
-       
+        cnt += 1;
+        console.log(cnt);
         requestAnimationFrame(loop);
+       
     }
+    
     
     app();
 </script>
