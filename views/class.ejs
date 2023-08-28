@@ -88,6 +88,7 @@
     async function app() {
         webcam = await navigator.mediaDevices.getUserMedia({ video: true, audio: false })
         video.srcObject = webcam;
+
         model = await tf.loadGraphModel('https://raw.githubusercontent.com/diony0409/AutoPayment/main/best_best_model/model.json');
        
         loop();
