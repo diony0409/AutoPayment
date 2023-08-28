@@ -213,15 +213,15 @@ for (const item in itemList) {
         const row = document.createElement("tr");
         const itemCell = document.createElement("td");
         const countCell = document.createElement("td");
-        const counttCell = document.createElement("td");
+        const priceCell = document.createElement("td");
        
         itemCell.textContent = item;
-      
         countCell.textContent = itemList[item];
-        counttCell.textContent = 1;
+        priceCell.textContent = 1;
 
         row.appendChild(itemCell);
         row.appendChild(countCell);
+        row.appendChild(priceCell);
 
         itemTableBody.appendChild(row);
     }
