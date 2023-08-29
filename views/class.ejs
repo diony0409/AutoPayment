@@ -39,7 +39,19 @@
                 <th scope="col">수량</th>
                 <th scope="col">가격</th>
                 <th scope="col">비고</th>
+                <th><button type="button" class="btn btn-info">payment</button></th>
+                <Tr><button type="button" class="btn btn-light">reset</button></Tr>
+                <tr>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;
+                </tr>
+                </tr>
+                <tr><button type="button" class="btn btn-dark">end</button></tr>
               </tr>
+              
             </thead>
             <tbody>
             
@@ -70,8 +82,9 @@
 
     var item_list = [];
     item_list.push([0,0]);
-    const displayedItems = [];
-    
+    let shouldStopLoop = false;
+    let resultSum = 0;
+    let resultSumCnt = 0;
     itemList = {
         'FantaPineM':0,
         'FantaPineS':0,
@@ -93,9 +106,10 @@
        
         loop();
     }
-    let anchor = 0
+    
     async function loop() {
-        anchor++;
+        if(!shouldStopLoop){
+        
         const image = tf.tidy(() => {
             return tf.image.resizeBilinear(tf.browser.fromPixels(video), [640, 640])
               .div(255.0).expandDims(0);
@@ -152,91 +166,155 @@
             //{item_name: labels[klass], cnt: 1}
             //labels[klass]이 item_list에 있는지 확인
             //없으면 추가, 있으면 카운트 증가
-            /*
-            console.log(item_list.length, labels[klass])  
-            let j=item_list.length;          
-            for(let i = 0; i < j; i++){
-                
-                if(hasValueIn2DArray(item_list,labels[klass]))
-                {
-                    //console.log('asdf222222');
-                    
-                    item_list[i][1]++;
-                    
-                }else{
-                    //console.log('asdf333333');
-                    item_list.push(labels[klass],0);
-                    item_list[i+1][1]=0;
-
-                }
-            }
-            */
-
+           
 
         }
 
-        // cnt += 1;
-        // console.log(cnt);
+        
         console.log(itemList);
-        // clnsole.log(itemList[labels[klass]]);
+        
 
-        requestAnimationFrame(loop);
+        
         const itemTableBody = document.getElementById("itemTableBody");
         
-/*
-// itemList 객체를 반복하며 값이 60을 초과하는 항목들을 테이블에 추가
-for (const item in itemList) {
-    if (itemList[item] > 10 && !displayedItems[item]) {
-        const row = document.createElement("tr");
-        const itemCell = document.createElement("td");
-        const countCell = document.createElement("td");
-        displayedItems[item] = '0';
-        
 
-        itemCell.textContent = item;
-        countCell.textContent = resultCnt;
-
-        row.appendChild(itemCell);
-        row.appendChild(countCell);
-
-        itemTableBody.appendChild(row);
-    }else if(itemList[item]>20 && displayedItems[item]){
-        resultCnt++;
-    }
-    
-
-}*/
 
 
 for (const item in itemList) {
-    if (itemList[item] === 10 || itemList[item] === 20 || itemList[item] === 30) {
+    if (itemList[item] === 20 || itemList[item] === 60 ) {
         const row = document.createElement("tr");
         const itemCell = document.createElement("td");
         const countCell = document.createElement("td");
         const priceCell = document.createElement("td");
-       
+        
         itemCell.textContent = item;
-        countCell.textContent = itemList[item];
-        priceCell.textContent = 1;
+        countCell.textContent = 1;
+
+        switch(item){
+            case 'FantaPineM':
+                priceCell.textContent = 1400;
+                resultSum+=1400;
+                break;
+
+            case 'FantaPineS' :
+                priceCell.textContent = 1200;
+                resultSum+=1200;
+                 break;
+
+            case 'GumHurabono' :
+                priceCell.textContent = 1200;
+                resultSum+=1200;
+                break;
+
+            case 'JinRamenCup' :
+                priceCell.textContent = 1800;
+                resultSum+=1800;
+                break;
+
+            case 'JinroSoju' :
+                priceCell.textContent = 1000;
+                resultSum+=1000;
+                shouldStopLoop = true;
+                alert("청소년 구매불가 물품입니다. 직원 결제 부탁드립니다.")
+                break;
+
+            case 'Maeilmilk' :
+                priceCell.textContent = 1000;
+                resultSum+=1000;
+                break;
+
+            case 'freshwater500ml' :
+                priceCell.textContent = 700;
+                resultSum+=700;
+                break;
+
+            case 'lighter' :
+                priceCell.textContent = 600;
+                resultSum+=600;
+                shouldStopLoop = true;
+                alert("청소년 구매불가 물품입니다. 직원 결제 부탁드립니다.")
+                break;
+
+            case 'mygumi' :
+                priceCell.textContent = 1000;
+                resultSum+=1000;
+                break;
+
+            case 'pocachip' :
+                priceCell.textContent = 1700;
+                resultSum+=1700;
+                break;
+
+            case 'pringles' :
+                priceCell.textContent = 2000;
+                resultSum+=2000;
+                break;
+        }
+        
 
         row.appendChild(itemCell);
         row.appendChild(countCell);
         row.appendChild(priceCell);
+        //addRow("총합", " ", resultSum);
+        resultSumCnt++;
 
         itemTableBody.appendChild(row);
+        
     }
     
 
 }
 
 
+        }
        
-    }
-/*
-    if(item_list[i][1]>40){
-        result_list.push(item_list[i][0])
-    }
-    */
+        requestAnimationFrame(loop);
+
+}
+const paymentButton = document.querySelector(".btn.btn-dark");
+paymentButton.addEventListener("click", () => {
+    shouldStopLoop = true;
+    
+    const itemTableBody = document.getElementById("itemTableBody");
+
+    const row = document.createElement("tr");
+    const resultSumCell = document.createElement("td");
+    resultSumCell.textContent = "총합";
+    //resultSumCell.colSpan = 2; // 셀 병합
+    resultSumCell.style.fontWeight = "bold"; // 폰트 굵게
+    row.appendChild(resultSumCell);
+    
+
+    const sumCntCell = document.createElement("td");
+    sumCntCell.textContent = resultSumCnt;
+    row.appendChild(sumCntCell);
+
+    const sumPriceCell = document.createElement("td");
+    sumPriceCell.textContent = resultSum;
+    row.appendChild(sumPriceCell);
+
+    
+    
+    itemTableBody.appendChild(row);
+
+    
+});
+
+const endButton = document.querySelector(".btn.btn-info");
+endButton.addEventListener("click", () => {
+    
+    window.open("/html/popup.html", "_blank","width=500, height=700, left=500,top=400");
+    
+});
+
+const resetButton = document.querySelector(".btn.btn-light");
+resetButton.addEventListener("click", () => {
+    window.location = "http://localhost:8088/class"
+    
+});
+
+
+
     
     app();
 
